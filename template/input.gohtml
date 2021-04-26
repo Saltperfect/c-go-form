@@ -1,0 +1,20 @@
+{{ define "input" }}
+<h1>
+Generated form 
+</h1>
+<form action="/saveform">
+    {{range . }}
+        {{ if  .IsText }}
+            {{range .List}}  {{ .Label }} <input type="text" placeholder="{{.Placeholder}}"><br> {{end}}
+        {{ else if  .IsRadioOrCheckbox }}
+            {{$type := .Type}}
+            {{$value := .Value}}
+            {{range .List}} <input type="{{$type}}" name="{{$value}}" value="{{ .Label }}"> {{ .Label }}  <br> {{end}}
+        {{ else if .IsSelect}}
+            {{.Value}} <select id="{{.Value}}" name="{{.Value}}">
+            {{range .List}} <option value="{{ .Label }}"> {{ .Label }} </option> <br> {{end}}
+        {{ end }}
+    {{end}}
+    <input type="submit" value="Submit"> 
+</form>
+{{end}}

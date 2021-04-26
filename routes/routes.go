@@ -27,5 +27,7 @@ func (router *Router) GetRoutes() *mux.Router {
 	router.multiplexer.HandleFunc("/view/{title}", router.actionHandler.View)
 	router.multiplexer.HandleFunc("/edit/{title}", router.actionHandler.Edit)
 	router.multiplexer.HandleFunc("/save/{title}", router.actionHandler.Save)
+	router.multiplexer.HandleFunc("/create/", router.actionHandler.Create)
+	router.multiplexer.HandleFunc("/generate/", router.actionHandler.Generate)
 	return router.multiplexer
 }

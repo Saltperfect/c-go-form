@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 	"github.com/saltperfect/c-go-form/models"
 )
@@ -25,7 +28,7 @@ func (ah *ActionHandler) View(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
-	ah.uiManager.Render(w, "view", p)
+	ah.uiManager.RenderPage(w, "view", p)
 }
 
 func (ah *ActionHandler) Edit(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +37,7 @@ func (ah *ActionHandler) Edit(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
-	ah.uiManager.Render(w, "edit", p)
+	ah.uiManager.RenderPage(w, "edit", p)
 }
 
 func (ah *ActionHandler) Save(w http.ResponseWriter, r *http.Request) {
@@ -48,4 +51,20 @@ func (ah *ActionHandler) Save(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, "/view/"+t, http.StatusFound)
+}
+
+func (ah *ActionHandler) Generate(w http.ResponseWriter, r *http.Request) {
+	label := r.FormValue("jsondata")
+	var list models.ElementList
+	fmt.Println(label)
+	err := json.Unmarshal([]byte(label), &list)
+	if err != nil {
+		ah.uiManager.RenderPage(w, "error", err.Error())
+	}
+	spew.Dump(list)
+	ah.uiManager.RenderPage(w, "input", list.List)
+}
+
+func (ah *ActionHandler) Create(w http.ResponseWriter, r *http.Request) {
+	ah.uiManager.RenderPage(w, "create", &models.Page{})
 }

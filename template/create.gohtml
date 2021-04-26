@@ -1,0 +1,24 @@
+{{define "create" }}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Create - Form page</title>
+    </head>
+    <body>
+        <textarea rows="4" cols="50" name="jsondata" form="inputform"> Enter text here...</textarea>
+        <button onclick="prettyPrint()">Pretty Print</button>
+        <form action="/generate/" method="POST" id="inputform">
+            <input type="submit" value="Generate Form">
+        </form>
+    </body>
+    <script>
+        function prettyPrint() {
+            var ugly = document.getElementById('myTextArea').value;
+            var obj = JSON.parse(ugly);
+            var pretty = JSON.stringify(obj, undefined, 4);
+            document.getElementById('myTextArea').value = pretty;
+        }
+    </script>
+</html>
+{{ end }}

@@ -3,8 +3,6 @@ package controllers
 import (
 	"html/template"
 	"net/http"
-
-	"github.com/saltperfect/c-go-form/models"
 )
 
 type UIManager struct {
@@ -17,8 +15,8 @@ func NewUIManager(template *template.Template) *UIManager {
 	}
 }
 
-func (ui *UIManager) Render(w http.ResponseWriter, tmpl string, page *models.Page) {
-	err := ui.template.ExecuteTemplate(w, tmpl+".html", page)
+func (ui *UIManager) RenderPage(w http.ResponseWriter, tmpl string, page interface{}) {
+	err := ui.template.ExecuteTemplate(w, tmpl, page)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
