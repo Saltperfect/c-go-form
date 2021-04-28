@@ -5,7 +5,7 @@
             <meta charset="UTF-8">
             <title>Create - Form page</title>
         </head>
-        <body name="cform">
+        <body>
             <h1> Viewing {{ .Name }} form .... </h1>
             <form >
                 {{range .List }}
@@ -20,8 +20,7 @@
                         {{range .List}} <option value="{{ .Label }}"> {{ .Label }} </option> <br> {{end}}
                     {{ end }}
                 {{end}}
-                <input type="submit" value="Save" formaction="/saveform/{{.Name}}" >
-                <input type="submit" value="Submit & Save" formaction="/submitandsaveform/{formname}" > 
+                <input type="submit" value="List all forms" formaction="/list/" >
             </form>
         </body>
     </html>

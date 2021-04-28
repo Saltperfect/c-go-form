@@ -68,6 +68,14 @@ func (ah *ActionHandler) Generate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (ah *ActionHandler) List(w http.ResponseWriter, r *http.Request) {
+	forms, err := ah.lshandler.LoadForms()
+	if err != nil {
+		ah.uiManager.RenderPage(w, "error", err.Error())	
+	}
+	ah.uiManager.RenderPage(w, "list", forms)
+}
+
 func (ah *ActionHandler) SaveForm(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	t := vars["title"]

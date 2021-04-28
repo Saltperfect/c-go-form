@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"io/ioutil"
-	"text/template"
+	"html/template"
 	"bytes"
 	"github.com/saltperfect/c-go-form/models"
 )
@@ -44,6 +44,21 @@ func (ls *LSHandler) SaveHtml(title string, tmpl string, page interface{}) error
 		Title: title,
 		Html: buf.String(),
 	}
-	ls.db.AddForm(data)
+	err = ls.db.AddForm(data)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+// func (ls *LSHandler) LoadForm() (*models.Form, error){
+
+// }
+func (ls *LSHandler) LoadForms() ([]*models.Form, error ){
+	forms, err := ls.db.LoadForms()
+	if err != nil {
+		return nil, err
+	}
+	return forms, nil
+
 }
