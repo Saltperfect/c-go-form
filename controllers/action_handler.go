@@ -71,20 +71,20 @@ func (ah *ActionHandler) Generate(w http.ResponseWriter, r *http.Request) {
 func (ah *ActionHandler) List(w http.ResponseWriter, r *http.Request) {
 	forms, err := ah.lshandler.LoadForms()
 	if err != nil {
-		ah.uiManager.RenderPage(w, "error", err.Error())	
+		ah.uiManager.RenderPage(w, "error", err.Error())
 	}
 	ah.uiManager.RenderPage(w, "list", forms)
 }
 
-func (ah *ActionHandler) SaveForm(w http.ResponseWriter, r *http.Request) {
+func (ah *ActionHandler) ViewForm(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	t := vars["title"]
-	err := r.ParseForm()
+	form, err := ah.lshandler.LoadForm(t)
 	if err != nil {
 		ah.uiManager.RenderPage(w, "error", err.Error())
 	}
-	spew.Dump(r.Form, t)
-
+	spew.Dump(form)
+	//w.Write([]byte(form.Html))
 }
 
 func (ah *ActionHandler) Create(w http.ResponseWriter, r *http.Request) {

@@ -1,10 +1,12 @@
 package controllers
 
 import (
-	"io/ioutil"
-	"html/template"
 	"bytes"
+	"html/template"
+	"io/ioutil"
+	"strings"
 	"github.com/saltperfect/c-go-form/models"
+	"golang.org/x/net/html"
 )
 
 type LSHandler struct {
@@ -51,9 +53,36 @@ func (ls *LSHandler) SaveHtml(title string, tmpl string, page interface{}) error
 	return nil
 }
 
-// func (ls *LSHandler) LoadForm() (*models.Form, error){
+func (ls *LSHandler) LoadForm(title string) (string, error){
+	form, err := ls.db.LoadForm(title)
+	formioreader := strings.NewReader(form.Html)
+	node, err := html.Parse(formioreader)
+	if err != nil {
+		return "", err
+	}
 
-// }
+	var f func(*html.Node)
+	// var submitButton = &html.Node{
+		
+	// }
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "form" {
+			// n.AppendChild()
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+
+	f(node)
+	var b bytes.Buffer
+	err = html.Render(&b, node)
+	if err != nil {
+		return "", err
+	}
+	return b.String(), nil
+
+}
 func (ls *LSHandler) LoadForms() ([]*models.Form, error ){
 	forms, err := ls.db.LoadForms()
 	if err != nil {

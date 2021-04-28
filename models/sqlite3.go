@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	_ "modernc.org/sqlite"
 )
 
@@ -30,7 +31,7 @@ func mustInitSQLiteDB(db *sql.DB) {
     FORM (
     	title VARCHAR(255) PRIMARY KEY , 
     	form VARCHAR(2000),
-    	created_at TIMESTAMP
+    	created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);`)
 	if err != nil {
 		panic(err)
@@ -39,7 +40,7 @@ func mustInitSQLiteDB(db *sql.DB) {
 
 func (s *SQLite) AddForm(form *Form) error {
 	_, err := s.manager.Exec(
-		`INSERT INTO FORM (title, form, created_at) VALUES (?, ?, GETDATE() )`,
+		`INSERT INTO FORM (title, form) VALUES (?, ? )`,
 		form.Title, form.Html)
 	if err != nil {
 		return err
@@ -89,5 +90,6 @@ func (s *SQLite) LoadForms() ([]*Form, error) {
 		form.Created = timestamp.Format("Mon Jan 2 15:04:05 MST 2006")
 		forms = append(forms, form)
 	}
+	spew.Dump(forms)
 	return forms, nil
 }
