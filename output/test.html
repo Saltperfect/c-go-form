@@ -1,0 +1,41 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Create - Form page</title>
+        </head>
+        <body name="cform">
+            <h1> Viewing test form .... </h1>
+            <form >
+                
+                    
+                          username <input type="text" placeholder="your userame plz"><br>   password <input type="text" placeholder="your pass world please"><br> 
+                    
+                
+                    
+                        
+                        
+                         <input type="radio" name="gender" value="Male"> Male  <br>  <input type="radio" name="gender" value="Female"> Female  <br> 
+                    
+                
+                    
+                          fav sport <input type="text" placeholder="fav sport plz"><br>   fav colour <input type="text" placeholder="fav colour plz"><br> 
+                    
+                
+                    
+                        
+                        
+                         <input type="checkbox" name="football team select" value="leeds united"> leeds united  <br>  <input type="checkbox" name="football team select" value="manchester city"> manchester city  <br> 
+                    
+                
+                    
+                        time zone <select id="time zone" name="time zone">
+                         <option value="gmt &#43;5:30"> gmt &#43;5:30 </option> <br>  <option value="gmt &#43;4:30"> gmt &#43;4:30 </option> <br> 
+                    
+                
+                <input type="submit" value="Save" formaction="/saveform/test" >
+                <input type="submit" value="Submit & Save" formaction="/submitandsaveform/{formname}" > 
+            </form>
+        </body>
+    </html>

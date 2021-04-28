@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/saltperfect/c-go-form/controllers"
+	"github.com/saltperfect/c-go-form/models"
 )
 
 type Router struct {
@@ -13,9 +14,9 @@ type Router struct {
 	actionHandler *controllers.ActionHandler
 }
 
-func NewRouter(template *template.Template) *Router {
-	lshandler := controllers.NewLSHandler()
-	uiManager := controllers.NewUIManager(template)
+func NewRouter(db models.Database, templates *template.Template) *Router {
+	lshandler := controllers.NewLSHandler(templates, db)
+	uiManager := controllers.NewUIManager(templates)
 	return &Router{
 		multiplexer:   mux.NewRouter(),
 		actionHandler: controllers.NewActionHandler(lshandler, uiManager),
@@ -29,5 +30,6 @@ func (router *Router) GetRoutes() *mux.Router {
 	router.multiplexer.HandleFunc("/save/{title}", router.actionHandler.Save)
 	router.multiplexer.HandleFunc("/create/", router.actionHandler.Create)
 	router.multiplexer.HandleFunc("/generate/", router.actionHandler.Generate)
+	router.multiplexer.HandleFunc("/saveform/{title}", router.actionHandler.SaveForm)
 	return router.multiplexer
 }

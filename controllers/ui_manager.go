@@ -21,3 +21,4 @@ func (ui *UIManager) RenderPage(w http.ResponseWriter, tmpl string, page interfa
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+

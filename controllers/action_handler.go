@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/davecgh/go-spew/spew"
@@ -55,14 +54,29 @@ func (ah *ActionHandler) Save(w http.ResponseWriter, r *http.Request) {
 
 func (ah *ActionHandler) Generate(w http.ResponseWriter, r *http.Request) {
 	label := r.FormValue("jsondata")
+	title := r.FormValue("title")
 	var list models.ElementList
-	fmt.Println(label)
 	err := json.Unmarshal([]byte(label), &list)
 	if err != nil {
 		ah.uiManager.RenderPage(w, "error", err.Error())
 	}
-	spew.Dump(list)
-	ah.uiManager.RenderPage(w, "input", list.List)
+	list.Name = title
+	ah.uiManager.RenderPage(w, "input", list)
+	err = ah.lshandler.SaveHtml(title, "input", list)
+	if err != nil {
+		ah.uiManager.RenderPage(w, "error", err.Error())
+	}
+}
+
+func (ah *ActionHandler) SaveForm(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	t := vars["title"]
+	err := r.ParseForm()
+	if err != nil {
+		ah.uiManager.RenderPage(w, "error", err.Error())
+	}
+	spew.Dump(r.Form, t)
+
 }
 
 func (ah *ActionHandler) Create(w http.ResponseWriter, r *http.Request) {

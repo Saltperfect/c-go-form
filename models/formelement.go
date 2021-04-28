@@ -17,6 +17,7 @@ type Element struct {
 }
 
 type ElementList struct {
+	Name string    `json:"name"`
 	List []Element `json:"list"`
 }
 
