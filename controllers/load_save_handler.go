@@ -60,5 +60,4 @@ func (ls *LSHandler) LoadForms() ([]*models.Form, error ){
 		return nil, err
 	}
 	return forms, nil
-
 }

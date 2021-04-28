@@ -25,7 +25,7 @@ func NewSQLiteDB() *SQLite {
 	return sqliteInstance
 }
 
-func mustInitSQLiteDB( db *sql.DB){
+func mustInitSQLiteDB(db *sql.DB) {
 	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS 
     FORM (
     	title VARCHAR(255) PRIMARY KEY , 
@@ -37,9 +37,9 @@ func mustInitSQLiteDB( db *sql.DB){
 	}
 }
 
-func (s *SQLite) AddForm( form *Form) error {
+func (s *SQLite) AddForm(form *Form) error {
 	_, err := s.manager.Exec(
-		`INSERT INTO FORM (title, form, created_at) VALUES (?, ?, CURRENT_TIMESTAMP )`,
+		`INSERT INTO FORM (title, form, created_at) VALUES (?, ?, GETDATE() )`,
 		form.Title, form.Html)
 	if err != nil {
 		return err
@@ -47,7 +47,7 @@ func (s *SQLite) AddForm( form *Form) error {
 	return nil
 }
 
-func (s *SQLite) LoadForm(title string) (*Form, error){
+func (s *SQLite) LoadForm(title string) (*Form, error) {
 	rows, err := s.manager.Query(`SELECT * from FORM WHERE title =?`, title)
 	if err != nil {
 		return nil, err
@@ -65,11 +65,11 @@ func (s *SQLite) LoadForm(title string) (*Form, error){
 		return nil, err
 	}
 	form.Created = timestamp.Format("Mon Jan 2 15:04:05 MST 2006")
-	
+
 	return form, nil
 }
 
-func (s *SQLite) LoadForms() ([]*Form, error){
+func (s *SQLite) LoadForms() ([]*Form, error) {
 	rows, err := s.manager.Query(`SELECT * from FORM;`)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (s *SQLite) LoadForms() ([]*Form, error){
 	var timestamp time.Time
 	var html *string
 
-	for rows.Next(){
+	for rows.Next() {
 		form = new(Form)
 
 		err = rows.Scan(&form.Title, html, &timestamp)
