@@ -10,7 +10,7 @@
             <form >
                 {{range .List }}
                     {{ if  .IsText }}
-                        {{range .List}}  {{ .Label }} <input type="text" placeholder="{{.Placeholder}}"><br> {{end}}
+                        {{range .List}}  {{ .Label }} <input type="text" name="{{.Label}}"placeholder="{{.Placeholder}}"><br> {{end}}
                     {{ else if  .IsRadioOrCheckbox }}
                         {{$type := .Type}}
                         {{$value := .Value}}

@@ -83,8 +83,15 @@ func (ah *ActionHandler) ViewForm(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		ah.uiManager.RenderPage(w, "error", err.Error())
 	}
-	spew.Dump(form)
-	//w.Write([]byte(form.Html))
+	w.Write([]byte(form))
+}
+
+func (ah *ActionHandler) SubmitForm(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		ah.uiManager.RenderPage(w, "error", err.Error())
+	}
+	spew.Dump(r.Form)
 }
 
 func (ah *ActionHandler) Create(w http.ResponseWriter, r *http.Request) {

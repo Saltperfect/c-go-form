@@ -32,5 +32,6 @@ func (router *Router) GetRoutes() *mux.Router {
 	router.multiplexer.HandleFunc("/generate/", router.actionHandler.Generate)
 	router.multiplexer.HandleFunc("/list/", router.actionHandler.List)
 	router.multiplexer.HandleFunc("/viewform/{title}", router.actionHandler.ViewForm)
+	router.multiplexer.HandleFunc("/submit/{title}", router.actionHandler.SubmitForm)
 	return router.multiplexer
 }

@@ -5,19 +5,21 @@ import (
 	"html/template"
 	"io/ioutil"
 	"strings"
+
 	"github.com/saltperfect/c-go-form/models"
 	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 type LSHandler struct {
 	template *template.Template
-	db models.Database
+	db       models.Database
 }
 
 func NewLSHandler(template *template.Template, db models.Database) *LSHandler {
 	return &LSHandler{
 		template: template,
-		db: db,
+		db:       db,
 	}
 }
 
@@ -44,7 +46,7 @@ func (ls *LSHandler) SaveHtml(title string, tmpl string, page interface{}) error
 	}
 	data := &models.Form{
 		Title: title,
-		Html: buf.String(),
+		Html:  buf.String(),
 	}
 	err = ls.db.AddForm(data)
 	if err != nil {
@@ -53,7 +55,7 @@ func (ls *LSHandler) SaveHtml(title string, tmpl string, page interface{}) error
 	return nil
 }
 
-func (ls *LSHandler) LoadForm(title string) (string, error){
+func (ls *LSHandler) LoadForm(title string) (string, error) {
 	form, err := ls.db.LoadForm(title)
 	formioreader := strings.NewReader(form.Html)
 	node, err := html.Parse(formioreader)
@@ -62,12 +64,28 @@ func (ls *LSHandler) LoadForm(title string) (string, error){
 	}
 
 	var f func(*html.Node)
-	// var submitButton = &html.Node{
-		
-	// }
+	var submitButton = &html.Node{
+		Type:     html.ElementNode,
+		DataAtom: atom.Input,
+		Data:     "input",
+		Attr: []html.Attribute{
+			{
+				Key: "type",
+				Val: "submit",
+			},
+			{
+				Key: "value",
+				Val: "Submit Form",
+			},
+			{
+				Key: "formaction",
+				Val: "/submit/" + title,
+			},
+		},
+	}
 	f = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "form" {
-			// n.AppendChild()
+			n.AppendChild(submitButton)
 		}
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
 			f(c)
@@ -81,9 +99,8 @@ func (ls *LSHandler) LoadForm(title string) (string, error){
 		return "", err
 	}
 	return b.String(), nil
-
 }
-func (ls *LSHandler) LoadForms() ([]*models.Form, error ){
+func (ls *LSHandler) LoadForms() ([]*models.Form, error) {
 	forms, err := ls.db.LoadForms()
 	if err != nil {
 		return nil, err
