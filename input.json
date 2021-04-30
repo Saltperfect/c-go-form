@@ -1,0 +1,62 @@
+{
+    "list":[
+    {
+        "type":"text",
+        "value":"data",
+        "attributelist":
+        [{
+            "label": "username",
+            "placeholder": "your userame plz"
+        },
+        {
+            "label": "password",
+            "placeholder": "your pass world please"
+        }]
+    },
+    {
+        "type":"radio",
+        "value":"gender",
+        "attributelist":
+        [{
+            "label": "Male"
+        },
+        {
+            "label": "Female"
+        }]
+    },
+    {
+        "type":"text",
+        "value":"personal info",
+        "attributelist":
+        [{
+            "label": "fav sport",
+            "placeholder": "fav sport plz"
+        },
+        {
+            "label": "fav colour",
+            "placeholder": "fav colour plz"
+        }]
+    },
+    {
+        "type":"checkbox",
+        "value":"football team select",
+        "attributelist":
+        [{
+            "label": "leeds united"
+        },
+        {
+            "label": "manchester city"
+        }]
+    },
+    {
+        "type":"select",
+        "value":"time zone",
+        "attributelist":
+        [{
+            "label": "gmt +5:30"
+        },
+        {
+            "label": "gmt +4:30"
+        }]
+    }]
+}

@@ -1,0 +1,18 @@
+{{define "list"}}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>View list of forms</title>
+        </head>
+        <body>
+            <h1> Viewing forms list </h1>
+                <ol>
+                {{range . }}
+                    <li><a href="/viewform/{{.Title}}"> {{.Title}} </a></li>
+                {{end}}
+                </ol>
+        </body>
+    </html>
+
+{{end}}
